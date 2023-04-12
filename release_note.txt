@@ -1,0 +1,12 @@
+
+v0.1.1
+    - up minSdk -> 26;
+    - up compose_ui_version -> 1.4.0;
+    - up lifecycle_version -> 2.5.1
+    - add NavigationApi;
+    - add CalendarApi;
+    - add data class Task;
+    - add HomeScreen;
+    - add simple navigation HomeScreen -> DetailTaskScreen
+    - add DataUtilConverters;
+    - add simple ItemTask;
