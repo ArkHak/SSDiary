@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +24,7 @@ import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+import org.koin.androidx.compose.koinViewModel
 import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.Task
 import java.io.InputStream
@@ -30,8 +33,10 @@ import java.io.InputStream
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onSelectTask: (String) -> Unit,
+    viewModel: SSDiaryViewModel = koinViewModel(),
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
+    val homeUiState by viewModel.homeUiState.collectAsState()
 
     val assetManager: AssetManager = LocalContext.current.assets
     val inputStream: InputStream = assetManager.open("start_data.json")
@@ -52,22 +57,10 @@ fun HomeScreen(
     ) {
         Calendar(calendarState = calendarState)
         TaskList(
-            tasks = tasks,
+            tasks = homeUiState.taskList,
             onSelectTask = {
-            onSelectTask(it)
-        })
-
-//        when (tasksUiState) {
-//            is TasksUiState.Success -> {
-//                TaskList(
-//                    tasks = tasksUiState.tasks,
-//                    onSelectTask = {
-//                        onSelectTask(it)
-//                    }
-//                )
-//            }
-//            else -> {}
-//        }
+                onSelectTask(it)
+            })
     }
 }
 

@@ -5,6 +5,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import ru.mys_ya.ssdiary.di.appModule
+import ru.mys_ya.ssdiary.di.dbModule
+import ru.mys_ya.ssdiary.di.gsonModule
 
 class SSDiaryApplication : Application() {
 
@@ -14,7 +16,11 @@ class SSDiaryApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@SSDiaryApplication)
-            modules(appModule)
+            modules(
+                appModule,
+                gsonModule,
+                dbModule
+            )
         }
     }
 }

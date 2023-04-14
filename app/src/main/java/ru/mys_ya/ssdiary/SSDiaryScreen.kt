@@ -6,7 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,8 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import org.koin.androidx.compose.koinViewModel
-import ru.mys_ya.ssdiary.ui.SSDiaryViewModel
 import ru.mys_ya.ssdiary.ui.screens.task.CreateTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.task.DetailTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.HomeScreen
@@ -46,8 +43,7 @@ fun SSDiaryApp(
             )
         }
     ) { innerPadding ->
-        val viewModel = koinViewModel<SSDiaryViewModel>()
-        val uiState by viewModel.uiState.collectAsState()
+//        val viewModel = koinViewModel<SSDiaryViewModel>()
 
         NavHost(
             navController = navController,
@@ -56,15 +52,14 @@ fun SSDiaryApp(
         ) {
             composable(route = SSDiaryScreen.Home.name) {
                 HomeScreen(
-                    onSelectTask = { id ->
-                        viewModel.setTaskId(id)
+                    onSelectTask = {
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
                     }
                 )
             }
             composable(route = SSDiaryScreen.DetailScreen.name) {
                 DetailTaskScreen(
-                    taskId = uiState.id
+                    taskId = "s"
                 )
             }
             composable(route = SSDiaryScreen.CreateScreen.name) {
