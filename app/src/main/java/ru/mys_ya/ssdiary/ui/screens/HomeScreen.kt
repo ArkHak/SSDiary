@@ -3,6 +3,7 @@ package ru.mys_ya.ssdiary.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -19,25 +20,46 @@ import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarS
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.Task
-import ru.mys_ya.ssdiary.data.simpleTask
+import ru.mys_ya.ssdiary.ui.TasksUiState
 
 @Composable
 fun HomeScreen(
+    tasksUiState: TasksUiState,
     modifier: Modifier = Modifier,
     onSelectTask: (String) -> Unit,
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
 
+//    val assetManager: AssetManager = LocalContext.current.assets
+//    val inputStream: InputStream = assetManager.open("start_data.json")
+//    val size: Int = inputStream.available()
+//    val buffer = ByteArray(size)
+//    inputStream.read(buffer)
+//    inputStream.close()
+//
+//    val json = String(buffer, Charsets.UTF_8)
+//
+//    val gson = Gson()
+//    val taskListType = object : TypeToken<List<Task>>() {}.type
+//    val tasks: List<Task> = gson.fromJson(json, taskListType)
+
+
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding))
     ) {
         Calendar(calendarState = calendarState)
-        TaskList(
-            task = simpleTask,
-            onSelectTask = {
-                onSelectTask(it)
+
+        when (tasksUiState) {
+            is TasksUiState.Success -> {
+                TaskList(
+                    tasks = tasksUiState.tasks,
+                    onSelectTask = {
+                        onSelectTask(it)
+                    }
+                )
             }
-        )
+            else -> {}
+        }
     }
 }
 
@@ -52,7 +74,7 @@ fun Calendar(
 @Composable
 private fun TaskList(
     modifier: Modifier = Modifier,
-    task: Task,
+    tasks: List<Task>,
     onSelectTask: (String) -> Unit,
 ) {
     LazyColumn(
@@ -60,11 +82,15 @@ private fun TaskList(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
-        item {
+        items(
+            items = tasks,
+            key = { task ->
+                task.name
+            }
+        ) { task ->
             ItemTask(
                 task = task,
-                onClickItem = { onSelectTask(it) }
-            )
+                onClickItem = { onSelectTask(it) })
         }
     }
 }
