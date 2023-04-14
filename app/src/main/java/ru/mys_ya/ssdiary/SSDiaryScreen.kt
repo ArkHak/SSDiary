@@ -10,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,7 +46,6 @@ fun SSDiaryApp(
             )
         }
     ) { innerPadding ->
-//        val viewModel: SSDiaryViewModel by viewModel()
         val viewModel = koinViewModel<SSDiaryViewModel>()
         val uiState by viewModel.uiState.collectAsState()
 
@@ -58,7 +56,6 @@ fun SSDiaryApp(
         ) {
             composable(route = SSDiaryScreen.Home.name) {
                 HomeScreen(
-                    tasksUiState = viewModel.tasksUiState,
                     onSelectTask = { id ->
                         viewModel.setTaskId(id)
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
