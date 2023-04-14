@@ -2,6 +2,7 @@
 v0.1.2
     - add koin;
     - add gson convert from start_data.json;
+    - add room;
 
 v0.1.1
     - up minSdk -> 26;
