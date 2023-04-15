@@ -8,9 +8,11 @@ import ru.mys_ya.ssdiary.ui.screens.SSDiaryViewModel
 
 val appModule = module {
 
-    viewModel { SSDiaryViewModel(get()) }
+    viewModel {
+        SSDiaryViewModel(get())
+    }
 
     single<TasksRepository> {
-        TaskRepositoryImpl(get())
+        TaskRepositoryImpl(get(), get())
     }
 }

@@ -14,9 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.koin.androidx.compose.koinViewModel
 import ru.mys_ya.ssdiary.ui.screens.task.CreateTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.task.DetailTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.HomeScreen
+import ru.mys_ya.ssdiary.ui.screens.SSDiaryViewModel
 
 
 enum class SSDiaryScreen(@StringRes val title: Int) {
@@ -34,6 +36,8 @@ fun SSDiaryApp(
     val currentScreen = SSDiaryScreen.valueOf(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
+    val viewModel = koinViewModel<SSDiaryViewModel>()
+
     Scaffold(
         topBar = {
             SSDiaryAppBar(
@@ -43,7 +47,7 @@ fun SSDiaryApp(
             )
         }
     ) { innerPadding ->
-//        val viewModel = koinViewModel<SSDiaryViewModel>()
+
 
         NavHost(
             navController = navController,

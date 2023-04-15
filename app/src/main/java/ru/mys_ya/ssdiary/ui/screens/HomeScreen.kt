@@ -1,6 +1,5 @@
 package ru.mys_ya.ssdiary.ui.screens
 
-import android.content.res.AssetManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,13 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
@@ -27,7 +23,6 @@ import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import org.koin.androidx.compose.koinViewModel
 import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.Task
-import java.io.InputStream
 
 @Composable
 fun HomeScreen(
@@ -37,20 +32,6 @@ fun HomeScreen(
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
     val homeUiState by viewModel.homeUiState.collectAsState()
-
-    val assetManager: AssetManager = LocalContext.current.assets
-    val inputStream: InputStream = assetManager.open("start_data.json")
-    val size: Int = inputStream.available()
-    val buffer = ByteArray(size)
-    inputStream.read(buffer)
-    inputStream.close()
-
-    val json = String(buffer, Charsets.UTF_8)
-
-    val gson = Gson()
-    val taskListType = object : TypeToken<List<Task>>() {}.type
-    val tasks: List<Task> = gson.fromJson(json, taskListType)
-
 
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding))
