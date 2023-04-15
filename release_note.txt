@@ -1,0 +1,28 @@
+v0.1.4
+    - refactor ItemTask;
+    - correct HomeScreen;
+    - TaskList for specific date;
+    - correct Time on ItemTask;
+
+v0.1.3
+    - correct create db with initialization form assets;
+    - add mapper;
+    - add TaskEntity;
+    - add TaskFromJson;
+
+v0.1.2
+    - add koin;
+    - add gson convert from start_data.json;
+    - add room;
+
+v0.1.1
+    - up minSdk -> 26;
+    - up compose_ui_version -> 1.4.0;
+    - up lifecycle_version -> 2.5.1
+    - add NavigationApi;
+    - add CalendarApi;
+    - add data class Task;
+    - add HomeScreen;
+    - add simple navigation HomeScreen -> DetailTaskScreen
+    - add DataUtilConverters;
+    - add simple ItemTask;
