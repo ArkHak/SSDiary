@@ -1,5 +1,6 @@
 package ru.mys_ya.ssdiary
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -18,7 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 import ru.mys_ya.ssdiary.ui.screens.task.CreateTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.task.DetailTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.HomeScreen
-import ru.mys_ya.ssdiary.ui.screens.SSDiaryViewModel
+import ru.mys_ya.ssdiary.ui.screens.HomeViewModel
 
 
 enum class SSDiaryScreen(@StringRes val title: Int) {
@@ -36,7 +37,7 @@ fun SSDiaryApp(
     val currentScreen = SSDiaryScreen.valueOf(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
-    val viewModel = koinViewModel<SSDiaryViewModel>()
+    val homeViewModel = koinViewModel<HomeViewModel>()
 
     Scaffold(
         topBar = {
@@ -47,8 +48,6 @@ fun SSDiaryApp(
             )
         }
     ) { innerPadding ->
-
-
         NavHost(
             navController = navController,
             startDestination = SSDiaryScreen.Home.name,
@@ -56,8 +55,13 @@ fun SSDiaryApp(
         ) {
             composable(route = SSDiaryScreen.Home.name) {
                 HomeScreen(
+                    homeUiState = homeViewModel.homeUiState,
                     onSelectTask = {
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
+                    },
+                    onSelectDate = {timestamp ->
+                        homeViewModel.getTaskList(timestamp)
+                        Log.d("MYS", timestamp.toString())
                     }
                 )
             }

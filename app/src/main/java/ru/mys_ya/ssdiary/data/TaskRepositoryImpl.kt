@@ -10,10 +10,16 @@ class TaskRepositoryImpl(
     private val taskDao: TaskDao,
     private val mapper: TaskMapper,
 ) : TasksRepository {
-    override fun getAllTasksStream(): Flow<List<Task>> =
-        taskDao.getAllTasks().map {
+//    override suspend fun getAllTasks(): List<Task> =
+//        taskDao.getAllTasks().map {
+//            mapper.toDataTask(it)
+//        }
+
+    override suspend fun getTasksList(timestamp: Long): List<Task> =
+        taskDao.getAllTasks(timestamp).map {
             mapper.toDataTask(it)
         }
+
 
     override fun getTaskStream(id: Int): Flow<Task?> =
         taskDao.getTask(id).map {

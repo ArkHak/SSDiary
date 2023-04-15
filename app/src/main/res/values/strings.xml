@@ -3,4 +3,5 @@
     <string name="detail_task_screen">Detail Task</string>
     <string name="create_task_screen">Create Task</string>
     <string name="back_button">Back</string>
+    <string name="loading">loading</string>
 </resources>

@@ -1,18 +1,23 @@
 package ru.mys_ya.ssdiary.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Alarm
+import androidx.compose.material.icons.rounded.Task
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,43 +25,64 @@ import io.github.boguszpawlowski.composecalendar.SelectableWeekCalendar
 import io.github.boguszpawlowski.composecalendar.WeekCalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableWeekCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
-import org.koin.androidx.compose.koinViewModel
 import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.Task
+import ru.mys_ya.ssdiary.util.convertDateToTimestamp
+import ru.mys_ya.ssdiary.util.convertTimestampToTime
+import java.time.LocalDate
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
+    homeUiState: HomeUiState,
     onSelectTask: (String) -> Unit,
-    viewModel: SSDiaryViewModel = koinViewModel(),
+    onSelectDate: (Long) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
-    val homeUiState by viewModel.homeUiState.collectAsState()
 
-    Column(
-        modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding))
-    ) {
-        Calendar(calendarState = calendarState)
-        TaskList(
-            tasks = homeUiState.taskList,
-            onSelectTask = {
-                onSelectTask(it)
-            })
+    Column(modifier = modifier) {
+        Calendar(
+            calendarState = calendarState,
+            modifier = modifier,
+            onSelectDate = {
+                onSelectDate(it)
+            }
+        )
+        when (homeUiState) {
+            is HomeUiState.Success -> TaskListScreen(
+                tasks = homeUiState.tasks,
+                modifier = modifier,
+                onSelectTask = {
+                    onSelectTask(it)
+                }
+            )
+            is HomeUiState.Loading -> LoadingScreen()
+            else -> HomeUiState.Error
+        }
     }
 }
 
 @Composable
 fun Calendar(
-    modifier: Modifier = Modifier,
     calendarState: WeekCalendarState<DynamicSelectionState>,
+    modifier: Modifier = Modifier,
+    onSelectDate: (Long) -> Unit,
 ) {
     SelectableWeekCalendar(calendarState = calendarState)
+    val date = calendarState.selectionState.selection.joinToString { it.toString() }
+    onSelectDate(
+        if (date.isBlank()) {
+            convertDateToTimestamp(LocalDate.now().toString())
+        } else {
+            convertDateToTimestamp(date)
+        }
+    )
 }
 
 @Composable
-private fun TaskList(
-    modifier: Modifier = Modifier,
+private fun TaskListScreen(
     tasks: List<Task>,
+    modifier: Modifier = Modifier,
     onSelectTask: (String) -> Unit,
 ) {
     LazyColumn(
@@ -96,9 +122,41 @@ fun ItemTask(
             modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding)),
             horizontalAlignment = Alignment.Start,
         ) {
-            Text(text = task.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Task,
+                    contentDescription = task.name
+                )
+                Spacer(modifier = modifier.width(4.dp))
+                Text(text = task.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
             Spacer(modifier = modifier.height(2.dp))
-            Text(text = task.dateStart.toString(), fontSize = 14.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val currentDate = convertTimestampToTime(task.dateStart)
+                Icon(
+                    imageVector = Icons.Rounded.Alarm,
+                    contentDescription = currentDate
+                )
+                Spacer(modifier = modifier.width(4.dp))
+                Text(text = currentDate, fontSize = 14.sp)
+            }
+
         }
+    }
+}
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image(
+            modifier = Modifier.size(200.dp),
+            painter = painterResource(R.drawable.loading_img),
+            contentDescription = stringResource(R.string.loading)
+        )
     }
 }
