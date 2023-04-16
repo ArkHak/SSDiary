@@ -3,6 +3,7 @@ package ru.mys_ya.ssdiary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import ru.mys_ya.ssdiary.ui.screens.SSDiaryApp
 import ru.mys_ya.ssdiary.ui.theme.SSDiaryTheme
 
 class MainActivity : ComponentActivity() {

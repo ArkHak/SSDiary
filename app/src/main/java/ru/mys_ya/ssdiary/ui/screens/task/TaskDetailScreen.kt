@@ -30,18 +30,18 @@ import ru.mys_ya.ssdiary.util.convertTimestampToDateTime
 
 @Composable
 fun DetailTaskScreen(
-    taskUiState: TaskUiState,
+    taskDetailUiState: TaskDetailUiState,
     modifier: Modifier = Modifier,
 ) {
 
-    when (taskUiState) {
-        is TaskUiState.Success -> DetailTaskScreen(
-            task = taskUiState.tasks,
+    when (taskDetailUiState) {
+        is TaskDetailUiState.Success -> DetailTaskScreen(
+            task = taskDetailUiState.tasks,
             modifier = modifier
         )
 
-        is TaskUiState.Loading -> LoadingScreen()
-        else -> TaskUiState.Error
+        is TaskDetailUiState.Loading -> LoadingScreen()
+        else -> TaskDetailUiState.Error
     }
 }
 

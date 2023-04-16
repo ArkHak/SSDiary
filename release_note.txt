@@ -1,5 +1,9 @@
+v0.1.6
+    - add TaskCreateScreen;
+    - simple create task;
+
 v0.1.5
-    - DetailScreen;
+    - add TaskDetailScreen;
 
 v0.1.4
     - refactor ItemTask;

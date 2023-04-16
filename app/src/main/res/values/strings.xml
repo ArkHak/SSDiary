@@ -4,4 +4,6 @@
     <string name="create_task_screen">Create Task</string>
     <string name="back_button">Back</string>
     <string name="loading">loading</string>
+    <string name="description">description</string>
+    <string name="name">name</string>
 </resources>
