@@ -1,4 +1,4 @@
-package ru.mys_ya.ssdiary.ui.screens
+package ru.mys_ya.ssdiary.ui.screens.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ import java.io.IOException
 class HomeViewModel(
     private val taskRepository: TasksRepository,
 ) : ViewModel() {
-    var timestampFlag: Long = 0L
+    private var timestampFlag: Long = 0L
 
     var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set

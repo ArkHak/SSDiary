@@ -9,7 +9,7 @@ data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo("date_start") val dateStart: Long,
-    @ColumnInfo("date_finish") val dateEnd: Long,
+    @ColumnInfo("date_finish") val dateFinish: Long,
     val name: String,
     val description: String,
 )

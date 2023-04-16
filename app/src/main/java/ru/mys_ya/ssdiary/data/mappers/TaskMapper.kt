@@ -9,7 +9,7 @@ class TaskMapper : ITaskMapper {
         Task(
             id = data.id,
             dateStart = data.dateStart,
-            dateEnd = data.dateEnd,
+            dateFinish = data.dateFinish,
             name = data.name,
             description = data.description
         )
@@ -19,7 +19,7 @@ class TaskMapper : ITaskMapper {
         Task(
             id = data.id,
             dateStart = data.dateStart,
-            dateEnd = data.dateEnd,
+            dateFinish = data.dateFinish,
             name = data.name,
             description = data.description
         )
@@ -33,7 +33,7 @@ class TaskMapper : ITaskMapper {
         TaskEntity(
             id = data.id,
             dateStart = data.dateStart,
-            dateEnd = data.dateEnd,
+            dateFinish = data.dateFinish,
             name = data.name,
             description = data.description
         )
@@ -42,7 +42,7 @@ class TaskMapper : ITaskMapper {
         TaskEntity(
             id = data.id,
             dateStart = data.dateStart,
-            dateEnd = data.dateEnd,
+            dateFinish = data.dateFinish,
             name = data.name,
             description = data.description
         )

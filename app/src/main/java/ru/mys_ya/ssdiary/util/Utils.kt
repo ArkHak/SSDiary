@@ -19,6 +19,12 @@ fun convertTimestampToTime(timestamp: Long): String {
     return formatter.format(date)
 }
 
+fun convertTimestampToDateTime(timestamp: Long): String {
+    val date = Date(timestamp * TIME_ADJUSTMENT)
+    val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault())
+    return formatter.format(date)
+}
+
 fun convertDateToTimestamp(dateTimeString: String): Long {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val date = dateFormat.parse(dateTimeString)

@@ -1,4 +1,4 @@
-package ru.mys_ya.ssdiary.ui.screens
+package ru.mys_ya.ssdiary.ui.screens.home
 
 import ru.mys_ya.ssdiary.data.Task
 
