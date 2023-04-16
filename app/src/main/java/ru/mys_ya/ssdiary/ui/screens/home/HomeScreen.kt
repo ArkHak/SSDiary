@@ -1,5 +1,10 @@
-package ru.mys_ya.ssdiary.ui.screens
+package ru.mys_ya.ssdiary.ui.screens.home
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -34,7 +39,7 @@ import java.time.LocalDate
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
-    onSelectTask: (String) -> Unit,
+    onSelectTask: (Int) -> Unit,
     onSelectDate: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,10 +57,11 @@ fun HomeScreen(
             is HomeUiState.Success -> TaskListScreen(
                 tasks = homeUiState.tasks,
                 modifier = modifier,
-                onSelectTask = {
-                    onSelectTask(it)
+                onSelectTask = { id ->
+                    onSelectTask(id)
                 }
             )
+
             is HomeUiState.Loading -> LoadingScreen()
             else -> HomeUiState.Error
         }
@@ -79,26 +85,37 @@ fun Calendar(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun TaskListScreen(
     tasks: List<Task>,
     modifier: Modifier = Modifier,
-    onSelectTask: (String) -> Unit,
+    onSelectTask: (Int) -> Unit,
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(
-            items = tasks,
-            key = { task ->
-                task.name
+    AnimatedContent(
+        targetState = tasks,
+        transitionSpec = {
+            if (targetState != initialState) {
+                slideInVertically { -it } with slideOutVertically { it }
+            } else {
+                slideInVertically { it } with slideOutVertically { -it }
             }
-        ) { task ->
-            ItemTask(
-                task = task,
-                onClickItem = { onSelectTask(it) })
+        }
+    )
+    { items ->
+        LazyColumn(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(items) { item ->
+                ItemTask(
+                    task = item,
+                    onClickItem = {
+                        onSelectTask(item.id)
+                    }
+                )
+            }
         }
     }
 }
@@ -142,7 +159,6 @@ fun ItemTask(
                 Spacer(modifier = modifier.width(4.dp))
                 Text(text = currentDate, fontSize = 14.sp)
             }
-
         }
     }
 }
