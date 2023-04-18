@@ -13,7 +13,7 @@ android {
         minSdk 26
         targetSdk 33
         versionCode 1
-        versionName "0.1.6"
+        versionName "0.1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -84,4 +84,7 @@ dependencies {
 
     //Icons
     implementation "androidx.compose.material:material-icons-extended:$compose_compiler_version"
+
+    //Date/Time picker
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
 }

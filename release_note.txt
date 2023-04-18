@@ -1,3 +1,7 @@
+v0.1.7
+    - add date/time picker;
+    - create new task - done;
+
 v0.1.6
     - add TaskCreateScreen;
     - simple create task;
