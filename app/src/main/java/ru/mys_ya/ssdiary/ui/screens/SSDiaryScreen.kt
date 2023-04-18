@@ -1,12 +1,16 @@
-package ru.mys_ya.ssdiary
+package ru.mys_ya.ssdiary.ui.screens
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -19,7 +23,8 @@ import ru.mys_ya.ssdiary.ui.screens.task.CreateTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.task.DetailTaskScreen
 import ru.mys_ya.ssdiary.ui.screens.home.HomeScreen
 import ru.mys_ya.ssdiary.ui.screens.home.HomeViewModel
-import ru.mys_ya.ssdiary.ui.screens.task.TaskViewModel
+import ru.mys_ya.ssdiary.ui.screens.task.TaskDetailViewModel
+import ru.mys_ya.ssdiary.R
 
 
 enum class SSDiaryScreen(@StringRes val title: Int) {
@@ -38,7 +43,8 @@ fun SSDiaryApp(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
     val homeViewModel = koinViewModel<HomeViewModel>()
-    val taskViewModel = koinViewModel<TaskViewModel>()
+    val taskDetailViewModel = koinViewModel<TaskDetailViewModel>()
+    val showFab = remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -47,7 +53,21 @@ fun SSDiaryApp(
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
-        }
+        },
+        floatingActionButton = {
+            if (showFab.value) {
+                FloatingActionButton(
+                    onClick = { navController.navigate(SSDiaryScreen.CreateScreen.name) },
+                    modifier = Modifier.navigationBarsPadding(),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "CreateScreen",
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
+            }
+        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -55,25 +75,28 @@ fun SSDiaryApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = SSDiaryScreen.Home.name) {
+                showFab.value = true
                 HomeScreen(
                     homeUiState = homeViewModel.homeUiState,
-                    onSelectTask = {id ->
-                        taskViewModel.getTask(id)
+                    onSelectTask = { id ->
+                        taskDetailViewModel.getTask(id)
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
                     },
-                    onSelectDate = {timestamp ->
+                    onSelectDate = { timestamp ->
                         homeViewModel.getTaskList(timestamp)
                     }
                 )
             }
             composable(route = SSDiaryScreen.DetailScreen.name) {
+                showFab.value = false
                 DetailTaskScreen(
-                    taskUiState = taskViewModel.taskUiState
+                    taskDetailUiState = taskDetailViewModel.taskDetailUiState
                 )
             }
             composable(route = SSDiaryScreen.CreateScreen.name) {
+                showFab.value = false
                 CreateTaskScreen(
-
+                    navigateBack = { navController.popBackStack() },
                 )
             }
         }

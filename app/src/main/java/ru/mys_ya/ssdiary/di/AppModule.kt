@@ -5,7 +5,8 @@ import org.koin.dsl.module
 import ru.mys_ya.ssdiary.data.TaskRepositoryImpl
 import ru.mys_ya.ssdiary.data.db.TasksRepository
 import ru.mys_ya.ssdiary.ui.screens.home.HomeViewModel
-import ru.mys_ya.ssdiary.ui.screens.task.TaskViewModel
+import ru.mys_ya.ssdiary.ui.screens.task.TaskCreateViewModel
+import ru.mys_ya.ssdiary.ui.screens.task.TaskDetailViewModel
 
 val appModule = module {
 
@@ -13,8 +14,12 @@ val appModule = module {
         HomeViewModel(get())
     }
 
-    viewModel{
-        TaskViewModel(get())
+    viewModel {
+        TaskDetailViewModel(get())
+    }
+
+    viewModel {
+        TaskCreateViewModel(get())
     }
 
     single<TasksRepository> {
