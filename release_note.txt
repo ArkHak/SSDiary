@@ -2,6 +2,7 @@ v0.1.8
     - screenOrientation="portrait";
     - darkTheme - off;
     - correct display FAB;
+    - add HomeTableScreen;
 
 v0.1.7
     - add date/time picker;

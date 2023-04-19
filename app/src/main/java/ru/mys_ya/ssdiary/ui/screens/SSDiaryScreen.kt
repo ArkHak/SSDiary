@@ -42,9 +42,10 @@ fun SSDiaryApp(
     val currentScreen = SSDiaryScreen.valueOf(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
+    val showFab = remember { mutableStateOf(true) }
     val homeViewModel = koinViewModel<HomeViewModel>()
     val taskDetailViewModel = koinViewModel<TaskDetailViewModel>()
-    val showFab = remember { mutableStateOf(true) }
+    var timestampHomeScreen: Long
 
     Scaffold(
         topBar = {
@@ -75,6 +76,7 @@ fun SSDiaryApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = SSDiaryScreen.Home.name) {
+//                homeViewModel.getTaskList(timestampHomeScreen)
                 showFab.value = true
                 HomeScreen(
                     homeUiState = homeViewModel.homeUiState,
@@ -83,7 +85,8 @@ fun SSDiaryApp(
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
                     },
                     onSelectDate = { timestamp ->
-                        homeViewModel.getTaskList(timestamp)
+                        timestampHomeScreen = timestamp
+                        homeViewModel.getTaskList(timestampHomeScreen)
                     }
                 )
             }
