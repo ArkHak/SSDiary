@@ -7,6 +7,7 @@ import org.koin.core.context.startKoin
 import ru.mys_ya.ssdiary.di.appModule
 import ru.mys_ya.ssdiary.di.dbModule
 import ru.mys_ya.ssdiary.di.gsonModule
+import ru.mys_ya.ssdiary.di.sharedPref
 
 class SSDiaryApplication : Application() {
 
@@ -19,7 +20,8 @@ class SSDiaryApplication : Application() {
             modules(
                 appModule,
                 gsonModule,
-                dbModule
+                dbModule,
+                sharedPref
             )
         }
     }

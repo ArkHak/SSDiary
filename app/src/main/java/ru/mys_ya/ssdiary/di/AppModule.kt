@@ -24,7 +24,7 @@ val appModule = module {
     }
 
     viewModel {
-        SSDiaryScreenViewModel()
+        SSDiaryScreenViewModel(get())
     }
 
     single<TasksRepository> {
