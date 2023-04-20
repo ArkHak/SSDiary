@@ -2,6 +2,12 @@ v0.1.8
     - screenOrientation="portrait";
     - darkTheme - off;
     - correct display FAB;
+    - add HomeTableScreen;
+    - add SSDiaryScreenUiState;
+    - add SSDiaryScreenViewModel;
+    - change Fab through SSDiaryScreenUiState;
+    - change TasksView;
+    - save TasksView (SharedPref).
 
 v0.1.7
     - add date/time picker;

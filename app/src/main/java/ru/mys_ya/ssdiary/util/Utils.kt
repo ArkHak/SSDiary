@@ -9,13 +9,6 @@ import java.util.*
 
 const val SECONDS_IN_DAY = 86399L
 const val TIME_ADJUSTMENT = 1000L
-fun convertDate(date: String): Long {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val date = dateFormat.parse(date)
-    val timestamp = date.time
-    val dateFormatt = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-    return convertDateToTimestamp(timestamp.toString())
-}
 
 fun convertTimestampToTime(timestamp: Long): String {
     val date = Date(timestamp * TIME_ADJUSTMENT)
@@ -26,6 +19,12 @@ fun convertTimestampToTime(timestamp: Long): String {
 fun convertTimestampToDateTime(timestamp: Long): String {
     val date = Date(timestamp * TIME_ADJUSTMENT)
     val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault())
+    return formatter.format(date)
+}
+
+fun convertTimestampToHourTime(timestamp: Long): String {
+    val date = Date(timestamp * TIME_ADJUSTMENT)
+    val formatter = SimpleDateFormat("H", Locale.getDefault())
     return formatter.format(date)
 }
 
