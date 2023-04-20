@@ -6,4 +6,11 @@
     <string name="loading">loading</string>
     <string name="description">description</string>
     <string name="name">name</string>
+    <string name="database_name">task_database</string>
+    <string name="settings">Settings</string>
+    <string name="assets_file_json">init_data.json</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pick_a_date">Pick a date</string>
+    <string name="pick_a_time">Pick a time</string>
 </resources>

@@ -17,8 +17,8 @@ class TaskCreateViewModel(
         taskUiState = newTaskUiState.copy(actionEnabled = newTaskUiState.isValid())
     }
 
-    suspend fun saveTask(){
-        if (taskUiState.isValid()){
+    suspend fun saveTask() {
+        if (taskUiState.isValid()) {
             taskRepository.insertTask(taskUiState.toTask())
         }
     }

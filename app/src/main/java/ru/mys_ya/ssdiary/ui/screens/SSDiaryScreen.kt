@@ -27,7 +27,6 @@ import ru.mys_ya.ssdiary.ui.screens.home.HomeViewModel
 import ru.mys_ya.ssdiary.ui.screens.task.TaskDetailViewModel
 import ru.mys_ya.ssdiary.R
 
-
 enum class SSDiaryScreen(@StringRes val title: Int) {
     Home(title = R.string.app_name),
     DetailScreen(title = R.string.detail_task_screen),
@@ -159,13 +158,13 @@ fun SSDiaryAppBar(
             }
         },
         actions = {
-            if (settingsShow){
+            if (settingsShow) {
                 IconButton(onClick = {
                     navigateSettings()
                 }) {
                     Icon(
                         imageVector = Icons.Filled.TableRows,
-                        contentDescription = "Settings",
+                        contentDescription = stringResource(R.string.settings),
                         tint = Color.White
                     )
                 }

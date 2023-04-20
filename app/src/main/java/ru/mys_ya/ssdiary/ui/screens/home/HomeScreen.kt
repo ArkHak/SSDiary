@@ -54,7 +54,6 @@ fun HomeScreen(
     Column(modifier = modifier) {
         Calendar(
             calendarState = calendarState,
-            modifier = modifier,
             onSelectDate = {
                 onSelectDate(it)
             }
@@ -88,7 +87,6 @@ fun HomeScreen(
 @Composable
 fun Calendar(
     calendarState: WeekCalendarState<DynamicSelectionState>,
-    modifier: Modifier = Modifier,
     onSelectDate: (Long) -> Unit,
 ) {
     SelectableWeekCalendar(calendarState = calendarState)
@@ -122,8 +120,8 @@ private fun TaskListScreen(
     { items ->
         LazyColumn(
             modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp)
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement)),
+            contentPadding = PaddingValues(dimensionResource(id = R.dimen.large_padding))
         ) {
             items(items) { item ->
                 ItemTask(
@@ -151,8 +149,8 @@ fun ItemTask(
             .clickable {
                 onClickItem(task.id)
             },
-        elevation = 8.dp,
-        shape = RoundedCornerShape(8.dp)
+        elevation = (dimensionResource(id = R.dimen.default_elevation)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.default_shape))
     ) {
         Column(
             modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding)),
@@ -189,7 +187,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize()
     ) {
         Image(
-            modifier = Modifier.size(200.dp),
+            modifier = Modifier.size(400.dp),
             painter = painterResource(R.drawable.loading_img),
             contentDescription = stringResource(R.string.loading)
         )
@@ -210,7 +208,7 @@ private fun TaskTableScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(id = R.dimen.large_padding))
     ) {
         items(hoursList) { hourTask ->
             Row(
@@ -245,7 +243,7 @@ fun RowScope.TableCell(
     Box(
         modifier = modifier
             .weight(weight)
-            .padding(8.dp),
+            .padding(dimensionResource(id = R.dimen.default_padding)),
     ) {
         Text(
             text = if (hour != 23) "$hour.00-${hour + 1}.00" else {
@@ -267,7 +265,7 @@ fun RowScope.TableCell(
         modifier = modifier
             .border(1.dp, Color.Black)
             .weight(weight)
-            .padding(8.dp)
+            .padding(dimensionResource(id = R.dimen.default_padding))
     ) {
         if (listTask.containsKey(hour.toString())) {
             listTask.keys.forEach { taskHour ->

@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,8 +73,8 @@ fun TaskCreateBody(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(dimensionResource(id = R.dimen.large_padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement))
     ) {
         TaskInputForm(
             taskUiState = taskUiState,
@@ -98,7 +99,7 @@ fun TaskInputForm(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement))
     ) {
         OutlinedTextField(
             value = taskUiState.name,
@@ -170,7 +171,7 @@ fun TaskTimePicker(
         modifier = modifier
             .clickable { timeDialogState.show() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement))
     ) {
         Icon(
             imageVector = Icons.Rounded.Alarm,
@@ -183,13 +184,13 @@ fun TaskTimePicker(
     MaterialDialog(
         dialogState = timeDialogState,
         buttons = {
-            positiveButton(text = "Ok")
-            negativeButton(text = "Cancel")
+            positiveButton(text = stringResource(R.string.ok))
+            negativeButton(text = stringResource(R.string.cancel))
         }
     ) {
         timepicker(
             initialTime = LocalTime.now(),
-            title = "Pick a date",
+            title = stringResource(R.string.pick_a_time),
             is24HourClock = true,
         ) {
             pickedTime = it
@@ -221,7 +222,7 @@ fun TaskDatePicker(
         modifier = modifier
             .clickable { dateDialogState.show() },
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement))
     ) {
         Icon(
             imageVector = Icons.Rounded.CalendarMonth,
@@ -233,13 +234,13 @@ fun TaskDatePicker(
         MaterialDialog(
             dialogState = dateDialogState,
             buttons = {
-                positiveButton(text = "Ok") {}
-                negativeButton(text = "Cancel")
+                positiveButton(text = stringResource(R.string.ok))
+                negativeButton(text = stringResource(R.string.cancel))
             }
         ) {
             datepicker(
                 initialDate = LocalDate.now(),
-                title = "Pick a date",
+                title = stringResource(R.string.pick_a_date),
                 locale = Locale.getDefault()
             ) {
                 pickedDate = it

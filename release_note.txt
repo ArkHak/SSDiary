@@ -1,5 +1,8 @@
 v0.2.0
     - correct settingsEnable;
+    - correct appColor;
+    - add generated icon;
+    - code refactor;
 
 v0.1.8
     - screenOrientation="portrait";
