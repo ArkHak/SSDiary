@@ -7,9 +7,11 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,7 +30,7 @@ import ru.mys_ya.ssdiary.R
 enum class SSDiaryScreen(@StringRes val title: Int) {
     Home(title = R.string.app_name),
     DetailScreen(title = R.string.detail_task_screen),
-    CreateScreen(title = R.string.create_task_screen)
+    CreateScreen(title = R.string.create_task_screen),
 }
 
 @Composable
@@ -39,7 +41,8 @@ fun SSDiaryApp(
     SSDiaryApp(
         modifier = modifier,
         uiState = ssDiaryScreenViewModel.uiState,
-        changeFabEnable = ssDiaryScreenViewModel::changeFabEnable
+        changeFabEnable = ssDiaryScreenViewModel::changeFabEnable,
+        changeTasksView = ssDiaryScreenViewModel::changeTasksView
     )
 }
 
@@ -49,22 +52,30 @@ fun SSDiaryApp(
     uiState: SSDiaryScreenUiState,
     navController: NavHostController = rememberNavController(),
     changeFabEnable: (Boolean) -> Unit,
+    changeTasksView: (Boolean) -> Unit,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = SSDiaryScreen.valueOf(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
     val showFab = uiState.isFabEnable
+    val tasksView = uiState.isTaskTableView
     val homeViewModel = koinViewModel<HomeViewModel>()
     val taskDetailViewModel = koinViewModel<TaskDetailViewModel>()
-    var timestampHomeScreen: Long = 0L
+    var timestampHomeScreen = 0L
 
     Scaffold(
         topBar = {
             SSDiaryAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                navigateSettings = {
+                    changeTasksView(!tasksView)
+                }
+//                navigateSettings = {
+//                    navController.navigate(SSDiaryScreen.Settings.name)
+//                }
             )
         },
         floatingActionButton = {
@@ -92,6 +103,7 @@ fun SSDiaryApp(
                 changeFabEnable(true)
                 HomeScreen(
                     homeUiState = homeViewModel.homeUiState,
+                    isTasksTableView = tasksView,
                     onSelectTask = { id ->
                         taskDetailViewModel.getTask(id)
                         navController.navigate(SSDiaryScreen.DetailScreen.name)
@@ -123,6 +135,7 @@ fun SSDiaryAppBar(
     currentScreen: SSDiaryScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
+    navigateSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -136,6 +149,17 @@ fun SSDiaryAppBar(
                         contentDescription = stringResource(R.string.back_button)
                     )
                 }
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+                navigateSettings()
+            }) {
+                Icon(
+                    imageVector = Icons.Rounded.Settings,
+                    contentDescription = "Settings",
+                    tint = Color.White
+                )
             }
         }
     )

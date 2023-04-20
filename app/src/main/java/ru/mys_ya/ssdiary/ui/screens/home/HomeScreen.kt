@@ -45,6 +45,7 @@ fun HomeScreen(
     homeUiState: HomeUiState,
     onSelectTask: (Int) -> Unit,
     onSelectDate: (Long) -> Unit,
+    isTasksTableView: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
@@ -59,13 +60,23 @@ fun HomeScreen(
         )
 
         when (homeUiState) {
-            is HomeUiState.Success -> TaskTableScreen(
-                tasks = homeUiState.tasks,
-                modifier = modifier,
-                onSelectTask = { id ->
-                    onSelectTask(id)
-                }
-            )
+            is HomeUiState.Success -> if (isTasksTableView) {
+                TaskTableScreen(
+                    tasks = homeUiState.tasks,
+                    modifier = modifier,
+                    onSelectTask = { id ->
+                        onSelectTask(id)
+                    }
+                )
+            } else {
+                TaskListScreen(
+                    tasks = homeUiState.tasks,
+                    modifier = modifier,
+                    onSelectTask = { id ->
+                        onSelectTask(id)
+                    }
+                )
+            }
 
             is HomeUiState.Loading -> LoadingScreen()
             else -> HomeUiState.Error

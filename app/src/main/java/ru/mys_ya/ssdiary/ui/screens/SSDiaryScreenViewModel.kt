@@ -13,4 +13,8 @@ class SSDiaryScreenViewModel : ViewModel() {
     fun changeFabEnable(isFabEnable: Boolean) {
         uiState = uiState.copy(isFabEnable = isFabEnable)
     }
+
+    fun changeTasksView(tasksTableView: Boolean) {
+        uiState = uiState.copy(isTaskTableView = tasksTableView)
+    }
 }
