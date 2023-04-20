@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.TaskFromJson
 import ru.mys_ya.ssdiary.data.db.entitys.TaskEntity
 import ru.mys_ya.ssdiary.data.mappers.TaskMapper
@@ -29,7 +30,7 @@ abstract class DiaryDatabase() : RoomDatabase() {
                 Room.databaseBuilder(
                     context,
                     DiaryDatabase::class.java,
-                    "task_database"
+                    context.getString(R.string.database_name)
                 )
                     .fallbackToDestructiveMigration()
                     .build()
@@ -47,7 +48,7 @@ abstract class DiaryDatabase() : RoomDatabase() {
 }
 
 private fun getInitializationTasks(context: Context): List<TaskFromJson> {
-    val inputStream: InputStream = context.assets.open("init_data.json")
+    val inputStream: InputStream = context.assets.open(context.getString(R.string.assets_file_json))
     val size: Int = inputStream.available()
     val buffer = ByteArray(size)
     inputStream.read(buffer)

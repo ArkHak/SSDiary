@@ -8,7 +8,6 @@ interface ITaskMapper {
     fun toDataTask(data: TaskEntity): Task
     fun toDataTask(data: TaskFromJson): Task
     fun toDataTask(dataList: List<TaskEntity>): List<Task>
-
     fun toEntityTask(data: TaskFromJson): TaskEntity
     fun toEntityTask(data: Task): TaskEntity
     fun toEntityTask(dataList: List<TaskFromJson>): List<TaskEntity>

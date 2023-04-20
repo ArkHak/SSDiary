@@ -20,10 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.mys_ya.ssdiary.R
 import ru.mys_ya.ssdiary.data.Task
 import ru.mys_ya.ssdiary.ui.screens.home.LoadingScreen
 import ru.mys_ya.ssdiary.util.convertTimestampToDateTime
@@ -51,7 +53,7 @@ fun DetailTaskScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(dimensionResource(id = R.dimen.large_padding)),
         horizontalAlignment = Alignment.Start,
     ) {
         Row(

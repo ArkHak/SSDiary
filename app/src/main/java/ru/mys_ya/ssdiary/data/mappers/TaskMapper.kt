@@ -14,7 +14,6 @@ class TaskMapper : ITaskMapper {
             description = data.description
         )
 
-
     override fun toDataTask(data: TaskFromJson): Task =
         Task(
             id = data.id,

@@ -8,10 +8,6 @@ class TaskRepositoryImpl(
     private val taskDao: TaskDao,
     private val mapper: TaskMapper,
 ) : TasksRepository {
-//    override suspend fun getAllTasks(): List<Task> =
-//        taskDao.getAllTasks().map {
-//            mapper.toDataTask(it)
-//        }
 
     override suspend fun getTasksList(timestamp: Long): List<Task> =
         taskDao.getAllTasks(timestamp).map {
