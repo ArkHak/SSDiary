@@ -1,13 +1,14 @@
 package ru.mys_ya.ssdiary.ui.screens
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.filled.TableRows
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ fun SSDiaryApp(
         modifier = modifier,
         uiState = ssDiaryScreenViewModel.uiState,
         changeFabEnable = ssDiaryScreenViewModel::changeFabEnable,
+        changeSettingsEnabled = ssDiaryScreenViewModel::changeSettingsEnable,
         changeTasksView = ssDiaryScreenViewModel::changeTasksView
     )
 }
@@ -52,6 +54,7 @@ fun SSDiaryApp(
     uiState: SSDiaryScreenUiState,
     navController: NavHostController = rememberNavController(),
     changeFabEnable: (Boolean) -> Unit,
+    changeSettingsEnabled: (Boolean) -> Unit,
     changeTasksView: (Boolean) -> Unit,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -59,6 +62,7 @@ fun SSDiaryApp(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
     val showFab = uiState.isFabEnable
+    val settingsShow = uiState.isSettingsEnable
     val tasksView = uiState.isTaskTableView
     val homeViewModel = koinViewModel<HomeViewModel>()
     val taskDetailViewModel = koinViewModel<TaskDetailViewModel>()
@@ -70,12 +74,10 @@ fun SSDiaryApp(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() },
+                settingsShow = settingsShow,
                 navigateSettings = {
                     changeTasksView(!tasksView)
                 }
-//                navigateSettings = {
-//                    navController.navigate(SSDiaryScreen.Settings.name)
-//                }
             )
         },
         floatingActionButton = {
@@ -101,6 +103,7 @@ fun SSDiaryApp(
             composable(route = SSDiaryScreen.Home.name) {
                 homeViewModel.getTaskList(timestampHomeScreen)
                 changeFabEnable(true)
+                changeSettingsEnabled(true)
                 HomeScreen(
                     homeUiState = homeViewModel.homeUiState,
                     isTasksTableView = tasksView,
@@ -116,12 +119,14 @@ fun SSDiaryApp(
             }
             composable(route = SSDiaryScreen.DetailScreen.name) {
                 changeFabEnable(false)
+                changeSettingsEnabled(false)
                 DetailTaskScreen(
                     taskDetailUiState = taskDetailViewModel.taskDetailUiState
                 )
             }
             composable(route = SSDiaryScreen.CreateScreen.name) {
                 changeFabEnable(false)
+                changeSettingsEnabled(false)
                 CreateTaskScreen(
                     navigateBack = { navController.popBackStack() },
                 )
@@ -134,13 +139,15 @@ fun SSDiaryApp(
 fun SSDiaryAppBar(
     currentScreen: SSDiaryScreen,
     canNavigateBack: Boolean,
+    settingsShow: Boolean,
     navigateUp: () -> Unit,
     navigateSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = { Text(stringResource(currentScreen.title)) },
-        modifier = modifier,
+        modifier = modifier
+            .background(color = MaterialTheme.colors.primary),
         navigationIcon = {
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
@@ -152,14 +159,16 @@ fun SSDiaryAppBar(
             }
         },
         actions = {
-            IconButton(onClick = {
-                navigateSettings()
-            }) {
-                Icon(
-                    imageVector = Icons.Rounded.Settings,
-                    contentDescription = "Settings",
-                    tint = Color.White
-                )
+            if (settingsShow){
+                IconButton(onClick = {
+                    navigateSettings()
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.TableRows,
+                        contentDescription = "Settings",
+                        tint = Color.White
+                    )
+                }
             }
         }
     )

@@ -21,6 +21,10 @@ class SSDiaryScreenViewModel(
         uiState = uiState.copy(isFabEnable = isFabEnable)
     }
 
+    fun changeSettingsEnable(isSettingsEnable: Boolean) {
+        uiState = uiState.copy(isSettingsEnable = isSettingsEnable)
+    }
+
     private fun getSharedPreferences(): Boolean =
         sharedPrefs.getBoolean(TASK_VIEW, true)
 

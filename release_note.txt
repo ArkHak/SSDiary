@@ -1,3 +1,6 @@
+v0.2.0
+    - correct settingsEnable;
+
 v0.1.8
     - screenOrientation="portrait";
     - darkTheme - off;
