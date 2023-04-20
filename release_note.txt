@@ -3,6 +3,9 @@ v0.1.8
     - darkTheme - off;
     - correct display FAB;
     - add HomeTableScreen;
+    - add SSDiaryScreenUiState;
+    - add SSDiaryScreenViewModel;
+    - change Fab through SSDiaryScreenUiState;
 
 v0.1.7
     - add date/time picker;

@@ -9,8 +9,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -36,16 +34,30 @@ enum class SSDiaryScreen(@StringRes val title: Int) {
 @Composable
 fun SSDiaryApp(
     modifier: Modifier = Modifier,
+    ssDiaryScreenViewModel: SSDiaryScreenViewModel = koinViewModel(),
+) {
+    SSDiaryApp(
+        modifier = modifier,
+        uiState = ssDiaryScreenViewModel.uiState,
+        changeFabEnable = ssDiaryScreenViewModel::changeFabEnable
+    )
+}
+
+@Composable
+fun SSDiaryApp(
+    modifier: Modifier = Modifier,
+    uiState: SSDiaryScreenUiState,
     navController: NavHostController = rememberNavController(),
+    changeFabEnable: (Boolean) -> Unit,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = SSDiaryScreen.valueOf(
         backStackEntry?.destination?.route ?: SSDiaryScreen.Home.name
     )
-    val showFab = remember { mutableStateOf(true) }
+    val showFab = uiState.isFabEnable
     val homeViewModel = koinViewModel<HomeViewModel>()
     val taskDetailViewModel = koinViewModel<TaskDetailViewModel>()
-    var timestampHomeScreen: Long
+    var timestampHomeScreen: Long = 0L
 
     Scaffold(
         topBar = {
@@ -56,7 +68,7 @@ fun SSDiaryApp(
             )
         },
         floatingActionButton = {
-            if (showFab.value) {
+            if (showFab) {
                 FloatingActionButton(
                     onClick = { navController.navigate(SSDiaryScreen.CreateScreen.name) },
                     modifier = Modifier.navigationBarsPadding(),
@@ -76,8 +88,8 @@ fun SSDiaryApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(route = SSDiaryScreen.Home.name) {
-//                homeViewModel.getTaskList(timestampHomeScreen)
-                showFab.value = true
+                homeViewModel.getTaskList(timestampHomeScreen)
+                changeFabEnable(true)
                 HomeScreen(
                     homeUiState = homeViewModel.homeUiState,
                     onSelectTask = { id ->
@@ -91,13 +103,13 @@ fun SSDiaryApp(
                 )
             }
             composable(route = SSDiaryScreen.DetailScreen.name) {
-                showFab.value = false
+                changeFabEnable(false)
                 DetailTaskScreen(
                     taskDetailUiState = taskDetailViewModel.taskDetailUiState
                 )
             }
             composable(route = SSDiaryScreen.CreateScreen.name) {
-                showFab.value = false
+                changeFabEnable(false)
                 CreateTaskScreen(
                     navigateBack = { navController.popBackStack() },
                 )
