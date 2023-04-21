@@ -1,3 +1,8 @@
+v0.2.1
+    - add EmptyTasksList;
+    - add Unit testing;
+    - correct location of modifiers;
+
 v0.2.0
     - correct settingsEnable;
     - correct appColor;

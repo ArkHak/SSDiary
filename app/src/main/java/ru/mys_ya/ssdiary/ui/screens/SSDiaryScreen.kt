@@ -49,12 +49,12 @@ fun SSDiaryApp(
 
 @Composable
 fun SSDiaryApp(
-    modifier: Modifier = Modifier,
     uiState: SSDiaryScreenUiState,
-    navController: NavHostController = rememberNavController(),
     changeFabEnable: (Boolean) -> Unit,
     changeSettingsEnabled: (Boolean) -> Unit,
     changeTasksView: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = SSDiaryScreen.valueOf(

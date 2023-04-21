@@ -44,8 +44,8 @@ import java.util.Locale
 
 @Composable
 fun CreateTaskScreen(
-    modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: TaskCreateViewModel = koinViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -65,11 +65,10 @@ fun CreateTaskScreen(
 @Composable
 fun TaskCreateBody(
     taskUiState: TaskUiState,
-    onTaskValueChange: (TaskUiState) -> Unit,
     onSaveClick: () -> Unit,
+    onTaskValueChange: (TaskUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -94,8 +93,8 @@ fun TaskCreateBody(
 @Composable
 fun TaskInputForm(
     taskUiState: TaskUiState,
-    modifier: Modifier = Modifier,
     onTaskValueChange: (TaskUiState) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -131,8 +130,8 @@ fun TaskInputForm(
 @Composable
 fun DateTimeField(
     taskUiState: TaskUiState,
-    modifier: Modifier = Modifier,
     onTaskValueChange: (TaskUiState) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column {
         TaskTimePicker(
@@ -152,8 +151,8 @@ fun DateTimeField(
 @Composable
 fun TaskTimePicker(
     taskUiState: TaskUiState,
-    modifier: Modifier = Modifier,
     onTaskValueChange: (TaskUiState) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val timeDialogState = rememberMaterialDialogState()
     var pickedTime by remember {
@@ -202,8 +201,8 @@ fun TaskTimePicker(
 @Composable
 fun TaskDatePicker(
     taskUiState: TaskUiState,
-    modifier: Modifier = Modifier,
     onTaskValueChange: (TaskUiState) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val dateDialogState = rememberMaterialDialogState()
     var pickedDate by remember {

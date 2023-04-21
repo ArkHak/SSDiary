@@ -44,9 +44,9 @@ import java.time.LocalDate
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
+    isTasksTableView: Boolean,
     onSelectTask: (Int) -> Unit,
     onSelectDate: (Long) -> Unit,
-    isTasksTableView: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
@@ -100,105 +100,11 @@ fun Calendar(
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-private fun TaskListScreen(
-    tasks: List<Task>,
-    modifier: Modifier = Modifier,
-    onSelectTask: (Int) -> Unit,
-) {
-    AnimatedContent(
-        targetState = tasks,
-        transitionSpec = {
-            if (targetState != initialState) {
-                slideInVertically { -it } with slideOutVertically { it }
-            } else {
-                slideInVertically { it } with slideOutVertically { -it }
-            }
-        }
-    )
-    { items ->
-        LazyColumn(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement)),
-            contentPadding = PaddingValues(dimensionResource(id = R.dimen.large_padding))
-        ) {
-            items(items) { item ->
-                ItemTask(
-                    task = item,
-                    onClickItem = { id ->
-                        onSelectTask(id)
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ItemTask(
-    task: Task,
-    modifier: Modifier = Modifier,
-    padding: Dp = 0.dp,
-    onClickItem: (Int) -> Unit,
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = padding)
-            .clickable {
-                onClickItem(task.id)
-            },
-        elevation = (dimensionResource(id = R.dimen.default_elevation)),
-        shape = RoundedCornerShape(dimensionResource(id = R.dimen.default_shape))
-    ) {
-        Column(
-            modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding)),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Task,
-                    contentDescription = task.name
-                )
-                Spacer(modifier = modifier.width(4.dp))
-                Text(text = task.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            }
-            Spacer(modifier = modifier.height(2.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val currentDate = convertTimestampToTime(task.dateStart)
-                Icon(
-                    imageVector = Icons.Rounded.Alarm,
-                    contentDescription = currentDate
-                )
-                Spacer(modifier = modifier.width(4.dp))
-                Text(text = currentDate, fontSize = 14.sp)
-            }
-        }
-    }
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Image(
-            modifier = Modifier.size(400.dp),
-            painter = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.loading)
-        )
-    }
-}
-
 @Composable
 private fun TaskTableScreen(
     tasks: List<Task>,
-    modifier: Modifier = Modifier,
     onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val hoursList = (0..23).map { it }
     val groupTaskByHour = tasks.groupBy({ convertTimestampToHourTime(it.dateStart) }) { it }
@@ -258,8 +164,8 @@ fun RowScope.TableCell(
     listTask: Map<String, List<Task>>,
     hour: Int,
     weight: Float,
-    modifier: Modifier = Modifier,
     onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -287,5 +193,121 @@ fun RowScope.TableCell(
         } else {
             Text(text = "Spacer", color = MaterialTheme.colors.background)
         }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun TaskListScreen(
+    tasks: List<Task>,
+    onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+
+    if (tasks.isNotEmpty()) {
+        AnimatedContent(
+            targetState = tasks,
+            transitionSpec = {
+                if (targetState != initialState) {
+                    slideInVertically { -it } with slideOutVertically { it }
+                } else {
+                    slideInVertically { it } with slideOutVertically { -it }
+                }
+            }
+        )
+        { items ->
+            LazyColumn(
+                modifier = modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.default_vertical_arrangement)),
+                contentPadding = PaddingValues(dimensionResource(id = R.dimen.large_padding))
+            ) {
+                items(items) { item ->
+                    ItemTask(
+                        task = item,
+                        onClickItem = { id ->
+                            onSelectTask(id)
+                        }
+                    )
+                }
+            }
+        }
+    } else {
+        EmptyTasksListScreen()
+    }
+}
+
+@Composable
+fun ItemTask(
+    task: Task,
+    onClickItem: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    padding: Dp = 0.dp,
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = padding)
+            .clickable {
+                onClickItem(task.id)
+            },
+        elevation = (dimensionResource(id = R.dimen.default_elevation)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.default_shape))
+    ) {
+        Column(
+            modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding)),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Task,
+                    contentDescription = task.name
+                )
+                Spacer(modifier = modifier.width(4.dp))
+                Text(text = task.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
+            Spacer(modifier = modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val currentDate = convertTimestampToTime(task.dateStart)
+                Icon(
+                    imageVector = Icons.Rounded.Alarm,
+                    contentDescription = currentDate
+                )
+                Spacer(modifier = modifier.width(4.dp))
+                Text(text = currentDate, fontSize = 14.sp)
+            }
+        }
+    }
+}
+
+@Composable
+fun EmptyTasksListScreen(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.large_padding))
+            .fillMaxSize()
+    ) {
+        Text(
+            text = "На текущую дату - дел пока нет)",
+        )
+    }
+}
+
+@Composable
+fun LoadingScreen(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Image(
+            modifier = Modifier.size(400.dp),
+            painter = painterResource(R.drawable.loading_img),
+            contentDescription = stringResource(R.string.loading)
+        )
     }
 }
