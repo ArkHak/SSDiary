@@ -44,9 +44,9 @@ import java.time.LocalDate
 @Composable
 fun HomeScreen(
     homeUiState: HomeUiState,
+    isTasksTableView: Boolean,
     onSelectTask: (Int) -> Unit,
     onSelectDate: (Long) -> Unit,
-    isTasksTableView: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val calendarState = rememberSelectableWeekCalendarState()
@@ -103,8 +103,8 @@ fun Calendar(
 @Composable
 private fun TaskTableScreen(
     tasks: List<Task>,
-    modifier: Modifier = Modifier,
     onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val hoursList = (0..23).map { it }
     val groupTaskByHour = tasks.groupBy({ convertTimestampToHourTime(it.dateStart) }) { it }
@@ -164,8 +164,8 @@ fun RowScope.TableCell(
     listTask: Map<String, List<Task>>,
     hour: Int,
     weight: Float,
-    modifier: Modifier = Modifier,
     onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -200,8 +200,8 @@ fun RowScope.TableCell(
 @Composable
 private fun TaskListScreen(
     tasks: List<Task>,
-    modifier: Modifier = Modifier,
     onSelectTask: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     if (tasks.isNotEmpty()) {
@@ -239,9 +239,9 @@ private fun TaskListScreen(
 @Composable
 fun ItemTask(
     task: Task,
+    onClickItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
     padding: Dp = 0.dp,
-    onClickItem: (Int) -> Unit,
 ) {
     Card(
         modifier = modifier
@@ -297,7 +297,9 @@ fun EmptyTasksListScreen(
 }
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
+fun LoadingScreen(
+    modifier: Modifier = Modifier,
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize()

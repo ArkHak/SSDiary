@@ -5,7 +5,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 
-val sharedPref = module {
+val sharedPrefModule = module {
     val appSettings = "appSettings"
 
     single {
