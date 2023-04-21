@@ -1,3 +1,6 @@
+v0.2.1
+    - add EmptyTasksList;
+
 v0.2.0
     - correct settingsEnable;
     - correct appColor;
