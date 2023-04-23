@@ -29,6 +29,7 @@ v0.2.1
 - ориентация - portrait;
 - Unit тесты;
 - SimbirSoftTheme;
+- Custom icon app;
 
 ## <b>Стек: </b>
 - Clean Architecture;
