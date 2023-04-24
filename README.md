@@ -36,6 +36,7 @@ v0.2.1
 - Single Activity;
 - MVI + MVVM;
 - Jetpack Compose;
+- Coroutines;
 - DI - Koin;
 - Android Navigation Compose;
 - Room;
